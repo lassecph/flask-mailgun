@@ -15,8 +15,7 @@ setup(
     platforms='any',
     install_requires=[
         'Flask',
-        'requests',
-        'threading'
+        'requests'
         ],
     classifiers=[
         'Development Status :: 4 - Beta',
