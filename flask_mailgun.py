@@ -1,4 +1,5 @@
 import requests
+import threading
 
 class Mailgun(object):
     app = None
@@ -22,6 +23,17 @@ class Mailgun(object):
 
         return self.mailgun_api.send_email(**kwargs)
 
+    def send_thread(self, **kwargs):
+        if not self.mailgun_api:
+            raise ValueError('A valid app instance has not been provided')
+
+        default_from = self.app.config.get('MAILGUN_DEFAULT_FROM')
+        if default_from:
+            kwargs.setdefault('from', default_from)
+
+        mail_thread = MailThread()
+        mail_thread.start()
+
 class MailgunApi(object):
     def __init__(self, domain, api_key):
         self.domain = domain
@@ -34,8 +46,20 @@ class MailgunApi(object):
 
     @property
     def endpoint(self):
-        return 'https://api.mailgun.net/v3/{}/messages'.format(self.domain)
+        return 'https://api.mailgun.net/v2/{}/messages'.format(self.domain)
 
     @property
     def auth(self):
         return ('api', self.api_key)
+
+class MailThread(object, threading.Thread):
+    def __init__(self, domain, api_key):
+        self.domain = domain
+        self.api_key = api_key
+        threading.Thread.__init__(self)
+
+    def run(self, **kwargs):
+        response = requests.post(self.endpoint, data=kwargs, auth=self.auth)
+        response.raise_for_status()
+        return
+
