@@ -9,8 +9,7 @@ class Mailgun(object):
             self.init_app(app)
 
     def init_app(self, app):
-        self.mailgun_api = MailgunApi(app.config['MAILGUN_DOMAIN'],
-                app.config['MAILGUN_API_KEY'])
+        self.mailgun_api = MailgunApi(app.config['MAILGUN_DOMAIN'],app.config['MAILGUN_API_KEY'])
         self.app = app
 
     def send_email(self, **kwargs):
@@ -35,7 +34,7 @@ class MailgunApi(object):
 
     @property
     def endpoint(self):
-        return 'https://api.mailgun.net/v2/{}/messages'.format(self.domain)
+        return 'https://api.mailgun.net/v3/{}/messages'.format(self.domain)
 
     @property
     def auth(self):
