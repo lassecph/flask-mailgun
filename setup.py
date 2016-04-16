@@ -3,11 +3,10 @@ from setuptools import setup
 
 setup(
     name='Flask-Mailgun',
-    version='0.4',
-    url='http://github.com/sleekslush/flask-mailgun',
+    version='0.5',
+    url='https://github.com/lassecph/flask-mailgun',
     license='BSD',
-    author='Craig Slusher',
-    author_email='cslush@gmail.com',
+    author='LKT',
     description='Adds Mailgun support to Flask applications',
     long_description=__doc__,
     py_modules=['flask_mailgun'],
